@@ -42,7 +42,7 @@ public class Espace {
 
     public int retirerAstre(String nom) {
         for (int i = 0; i < this.astres.size(); i++) {
-            Astre current_astre = this.astres.get(i);
+            Astre current_astre = (Astre) this.astres.get(i);
             if (current_astre.getNom() == nom) {
                 this.astres.remove(i);
                 return 0;
