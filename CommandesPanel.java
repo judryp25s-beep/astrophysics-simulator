@@ -123,6 +123,7 @@ public class CommandesPanel extends JPanel {
         groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.action_button);
         this.action_button.setText("Ajouter");
+        this.action_button.addMouseListener(new EcouteurBoutonAjouter());
         this.add(groupe_composants);
 
     }
