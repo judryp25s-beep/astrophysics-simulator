@@ -151,4 +151,16 @@ public class Astre {
         this.updateAcceleration(dt);
     }
 
+    public double calculerDistance(Astre a){
+        double d = 0;
+        double x1 = this.getPosition().getX();
+        double y1 = this.getPosition().getY();
+
+        double x2 = a.getPosition().getX();
+        double y2 = a.getPosition().getY();
+        
+        d = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1), 2));
+        return d;
+    }
+
 }
