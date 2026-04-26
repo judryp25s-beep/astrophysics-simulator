@@ -110,7 +110,9 @@ public class Astre {
         double dy = 0.5*this.acceleration.getY()*dt*dt + this.vitesse.getY() * dt;
 
         this.position.setX(px+dx);
-        this.position.setX(py+dy);
+        this.position.setY(py+dy);
+        System.out.println("Déplacement de " + this.getNom() + " " + px + ", " + py + " de " + dx + ", " + dy);
+
 
     }
 
@@ -121,8 +123,8 @@ public class Astre {
         double dx = this.acceleration.getX()*dt;
         double dy = this.acceleration.getY()*dt;
 
-        this.position.setX(vx+dx);
-        this.position.setX(vy+dy);
+        this.vitesse.setX(vx+dx);
+        this.vitesse.setY(vy+dy);
 
     }
 

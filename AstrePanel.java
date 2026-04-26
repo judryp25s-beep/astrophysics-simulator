@@ -5,9 +5,11 @@ import javax.swing.JPanel;
 
 public class AstrePanel extends JPanel {
     private Vector astres;
+    private int pause;
 
     AstrePanel(Vector astres){
         this.astres = astres;
+        this.pause = 10;
     }
 
     public void setAstres(Vector astres) {
@@ -17,8 +19,8 @@ public class AstrePanel extends JPanel {
         return astres;
     }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
+    public void paint(Graphics g){
+        super.paint(g);
         g.setColor(Color.BLACK);
 
         for (int i = 0; i < astres.size(); i++){
@@ -27,13 +29,14 @@ public class AstrePanel extends JPanel {
             int posY = (int) astre.getPosition().getY();
 
             int dx = (int) astre.getDiametre().getX();
-            int dy = (int) astre.getDiametre().getX();
+            int dy = (int) astre.getDiametre().getY();
             g.drawOval(posX, posY, dx, dy);
-
+            astre.update(this.pause*0.001);
         }
 
+
         try {
-            Thread.sleep(50);
+            Thread.sleep(this.pause);
         } catch (Exception e) {
             // TODO: handle exception
         }
