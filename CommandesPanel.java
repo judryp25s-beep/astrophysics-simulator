@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class CommandesPanel extends JPanel {
 
-    private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf;
+    private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
     private JButton action_button;
     private Espace espace;
@@ -13,7 +13,7 @@ public class CommandesPanel extends JPanel {
         JPanel groupe_composants;
 
         this.setBackground(new Color(240, 240, 240));
-        this.setLayout(new GridLayout(3, 4, 10, 10));
+        this.setLayout(new GridLayout(4, 4, 10, 10));
 
         int tf_width = 8;
         this.nom_tf = new JTextField(tf_width);
@@ -27,37 +27,97 @@ public class CommandesPanel extends JPanel {
         this.posx_tf = new JTextField(tf_width);
         this.posy_tf = new JTextField(tf_width);
         this.temp_tf = new JTextField(tf_width);
+        this.mass_tf = new JTextField(tf_width);
         this.action_button = new JButton();
 
-        JLabel nom_l = new JLabel("Nom ");
-        JLabel desc_l = new JLabel("Desc ");
+        JLabel nom_l = new JLabel("Nom   ");
+        JLabel desc_l = new JLabel("Desc  ");
+        JLabel mass_l = new JLabel("Mass  ");
         JLabel diamx_l = new JLabel("Diamx ");
         JLabel diamy_l = new JLabel("Diamy ");
-        JLabel accx_l = new JLabel("Accx ");
-        JLabel accy_l = new JLabel("Accy ");
-        JLabel vitx_l = new JLabel("Vitx ");
-        JLabel vity_l = new JLabel("Vity ");
-        JLabel posx_l = new JLabel("Posx ");
-        JLabel posy_l = new JLabel("Posy ");
-        JLabel temp_l = new JLabel("Temp ");
+        JLabel accx_l = new JLabel("Accx  ");
+        JLabel accy_l = new JLabel("Accy  ");
+        JLabel vitx_l = new JLabel("Vitx  ");
+        JLabel vity_l = new JLabel("Vity  ");
+        JLabel posx_l = new JLabel("Posx  ");
+        JLabel posy_l = new JLabel("Posy  ");
+        JLabel temp_l = new JLabel("Temp  ");
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.nom_tf);
         groupe_composants.add(nom_l);
+        groupe_composants.add(this.nom_tf);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.desc_tf);
         groupe_composants.add(desc_l);
+        groupe_composants.add(this.desc_tf);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.temp_tf);
         groupe_composants.add(temp_l);
+        groupe_composants.add(this.temp_tf);
         this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(mass_l);
+        groupe_composants.add(this.mass_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(diamx_l);
+        groupe_composants.add(this.diamx_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(diamy_l);
+        groupe_composants.add(this.diamy_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(accx_l);
+        groupe_composants.add(this.accx_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(accy_l);
+        groupe_composants.add(this.accy_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(vitx_l);
+        groupe_composants.add(this.vitx_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(vity_l);
+        groupe_composants.add(this.vity_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(posx_l);
+        groupe_composants.add(this.posx_tf);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(posy_l);
+        groupe_composants.add(this.posy_tf);
+        this.add(groupe_composants);
+
+        this.add(new JLabel());
+        this.add(new JLabel());
+        this.add(new JLabel());
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
@@ -65,55 +125,73 @@ public class CommandesPanel extends JPanel {
         this.action_button.setText("Ajouter");
         this.add(groupe_composants);
 
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.diamx_tf);
-        groupe_composants.add(diamx_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.diamy_tf);
-        groupe_composants.add(diamy_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.accx_tf);
-        groupe_composants.add(accx_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.accy_tf);
-        groupe_composants.add(accy_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.vitx_tf);
-        groupe_composants.add(vitx_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.vity_tf);
-        groupe_composants.add(vity_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.posx_tf);
-        groupe_composants.add(posx_l);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.posy_tf);
-        groupe_composants.add(posy_l);
-        this.add(groupe_composants);
-
     }
 
+    public void ajouterAstre() {
+        String nom = this.nom_tf.getText();
+        String desc = this.desc_tf.getText();
+        String mass = this.mass_tf.getText();
+        String temp = this.temp_tf.getText();
+        String diamx = this.diamx_tf.getText();
+        String diamy = this.diamy_tf.getText();
+        String posx = this.posx_tf.getText();
+        String posy = this.posy_tf.getText();
+        String accx = this.accx_tf.getText();
+        String accy = this.accy_tf.getText();
+        String vitx = this.vitx_tf.getText();
+        String vity = this.vity_tf.getText();
+
+        double mass_, temp_, vitx_, vity_, accx_, accy_, posx_, posy_, diamx_, diamy_;
+
+        if (nom == "" || diamx == "" || diamy == "" || posx == "" || posy == "") {
+            System.out.println("Ajout impossible");
+            return;
+        }
+
+        if (temp == "") {
+            temp_ = 0;
+        } else {
+            temp_ = Double.parseDouble(temp);
+        }
+
+        
+        diamx_ = Double.parseDouble(diamx);
+        diamy_ = Double.parseDouble(diamy);
+        posx_ = Double.parseDouble(posx);
+        posy_ = Double.parseDouble(posy);
+
+        if (accx == "") {
+            accx_ = 0;
+        } else {
+            accx_ = Double.parseDouble(accx);
+        }
+
+        if (mass == "") {
+            mass_ = 0;
+        } else {
+            mass_ = Double.parseDouble(mass);
+        }
+
+        if (accy == "") {
+            accy_ = 0;
+        } else {
+            accy_ = Double.parseDouble(accy);
+        }
+
+        if (vitx == "") {
+            vitx_ = 0;
+        } else {
+            vitx_ = Double.parseDouble(vitx);
+        }
+
+        if (vity == "") {
+            vity_ = 0;
+        } else {
+            vity_ = Double.parseDouble(vity);
+        }
+
+        this.espace.ajouterAstre(nom, desc, mass_, diamx_, diamy_, temp_, accx_, accy_, vitx_, vity_, posx_, posy_);
+        
+    }
 
 }

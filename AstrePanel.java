@@ -31,6 +31,12 @@ public class AstrePanel extends JPanel {
             g.drawOval(posX, posY, dx, dy);
 
         }
-       // repaint();
+
+        try {
+            Thread.sleep(50);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+       repaint();
     }
 }
