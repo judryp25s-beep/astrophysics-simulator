@@ -6,8 +6,10 @@ public class CommandesPanel extends JPanel {
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf;
 
     private JButton action_button;
+    private Espace espace;
 
-    public CommandesPanel() {
+    public CommandesPanel(Espace espace) {
+        this.espace = espace;
         JPanel groupe_composants;
 
         this.setBackground(new Color(240, 240, 240));
@@ -112,4 +114,6 @@ public class CommandesPanel extends JPanel {
         this.add(groupe_composants);
 
     }
+
+
 }
