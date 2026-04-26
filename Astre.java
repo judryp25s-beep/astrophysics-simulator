@@ -7,6 +7,7 @@ public class Astre {
     private X_Y acceleration;
     private X_Y vitesse;
     private X_Y position;
+    private Espace espace;
 
     public Astre(String nom, String description, double masse, X_Y diametre, double temperature, X_Y acceleration,
             X_Y vitesse, X_Y position) {
@@ -102,6 +103,10 @@ public class Astre {
         return temperature;
     }
 
+    public void setEspace(Espace e) {
+        this.espace = e;
+    }
+
     public void updatePosition(double dt) {
         double px = this.position.getX();
         double py = this.position.getY();
@@ -128,9 +133,22 @@ public class Astre {
 
     }
 
+    public void updateAcceleration(double dt) {
+        double dax = 0, day = 0;
+        for (int i = 0; i < this.espace.getAstres().size(); i++) {
+            Astre a = (Astre) this.espace.getAstres().get(i);
+            if (a == this) continue;
+            //dax += 
+        }
+    }
+
+    // distance entre deux astres
+    // voir si deux astres sont en colision (diamètre contre centre)
+
     public void update(double dt) {
         this.updatePosition(dt);
         this.updateVitesse(dt);
+        this.updateAcceleration(dt);
     }
 
 }

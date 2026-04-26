@@ -26,12 +26,13 @@ public class Espace {
     }
 
     public void ajouterAstre(Astre astre) {
+        astre.setEspace(this);
         this.astres.add(astre);
     }
 
     public void ajouterAstre(String nom, String desc, double masse, double dx, double dy, double temperature, double ax, double ay, double vx, double vy, double px, double py) {
         Astre a = new Astre(nom, desc, masse, dx, dy, temperature, ax, ay, vx, vy, px, py);
-        this.astres.add(a);
+        this.ajouterAstre(a);
     }
 
     public int retirerAstre(int i) {

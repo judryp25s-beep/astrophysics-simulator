@@ -9,7 +9,7 @@ public class AstrePanel extends JPanel {
 
     AstrePanel(Vector astres){
         this.astres = astres;
-        this.pause = 10;
+        this.pause = 20;
     }
 
     public void setAstres(Vector astres) {
