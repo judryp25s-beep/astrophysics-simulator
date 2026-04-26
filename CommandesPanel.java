@@ -2,26 +2,29 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CommandesPanel extends JPanel {
+
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf;
 
     private JButton action_button;
+
     public CommandesPanel() {
         JPanel groupe_composants;
 
         this.setBackground(new Color(240, 240, 240));
         this.setLayout(new GridLayout(3, 4, 10, 10));
 
-        this.nom_tf = new JTextField();
-        this.desc_tf = new JTextField();
-        this.diamx_tf = new JTextField();
-        this.diamy_tf = new JTextField();
-        this.accx_tf = new JTextField();
-        this.accy_tf = new JTextField();
-        this.vitx_tf = new JTextField();
-        this.vity_tf = new JTextField();
-        this.posx_tf = new JTextField();
-        this.posy_tf = new JTextField();
-        this.temp_tf = new JTextField();
+        int tf_width = 8;
+        this.nom_tf = new JTextField(tf_width);
+        this.desc_tf = new JTextField(tf_width);
+        this.diamx_tf = new JTextField(tf_width);
+        this.diamy_tf = new JTextField(tf_width);
+        this.accx_tf = new JTextField(tf_width);
+        this.accy_tf = new JTextField(tf_width);
+        this.vitx_tf = new JTextField(tf_width);
+        this.vity_tf = new JTextField(tf_width);
+        this.posx_tf = new JTextField(tf_width);
+        this.posy_tf = new JTextField(tf_width);
+        this.temp_tf = new JTextField(tf_width);
         this.action_button = new JButton();
 
         JLabel nom_l = new JLabel("Nom ");
