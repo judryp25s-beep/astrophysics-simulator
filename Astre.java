@@ -8,7 +8,7 @@ public class Astre {
     private X_Y vitesse;
     private X_Y position;
     private Espace espace;
-    private double G = 6.674;
+    private double G = 6.674*0.001;
 
     public Astre(String nom, String description, double masse, X_Y diametre, double temperature, X_Y acceleration,
             X_Y vitesse, X_Y position) {
@@ -136,18 +136,20 @@ public class Astre {
 
     public void updateAcceleration(double dt) {
         double dax = 0, day = 0;
+        if (this.masse == 0) return;
         for (int i = 0; i < this.espace.getAstres().size(); i++) {
             Astre a = (Astre) this.espace.getAstres().get(i);
-            if (a == this) continue;
+            if (a == this || a.getMasse() == 0) continue;
             double dx = a.getPosition().getX() - this.position.getX();
             double dy = a.getPosition().getY() - this.position.getY();
             double d = this.calculerDistance(a);
             double da = this.accelerationGAvec(a);
             dax += dx*da/d;
             day += dy*da/d;
+            System.out.println("Acceleration " + this.nom + " " + a.getNom() + " " + dax + " " + day + " " + this.acceleration.getX() + " " + this.acceleration.getY());
         }
-        this.acceleration.setX(this.acceleration.getX() + dax);
-        this.acceleration.setY(this.acceleration.getY() + day);
+        this.acceleration.setX(dax);
+        this.acceleration.setY(day);
     }
 
     public double accelerationGAvec(Astre a) {
