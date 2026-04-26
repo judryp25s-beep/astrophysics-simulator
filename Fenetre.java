@@ -14,7 +14,7 @@ public class Fenetre extends JFrame {
         this.setName(espace.getNom());
         this.setSize(400, 300);
         this.setLayout(new BorderLayout());
-        this.add(astre_panel, BorderLayout.NORTH);
+        this.add(astre_panel, BorderLayout.CENTER);
         this.add(commandes, BorderLayout.SOUTH);
         this.setVisible(true);
     }
