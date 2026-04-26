@@ -147,7 +147,7 @@ public class Astre {
             day += dy*da/d;
         }
         this.acceleration.setX(this.acceleration.getX() + dax);
-        this.acceleration.setX(this.acceleration.getY() + day);
+        this.acceleration.setY(this.acceleration.getY() + day);
     }
 
     public double accelerationGAvec(Astre a) {
