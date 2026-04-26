@@ -1,7 +1,13 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 public class EcouteurBoutonAjouter implements MouseListener {
+
     private CommandesPanel commandes;
+
+    public EcouteurBoutonAjouter(CommandesPanel cmd) {
+        this.commandes = cmd;
+    }
+
     public void mouseClicked(MouseEvent e){
         commandes.ajouterAstre();
     }

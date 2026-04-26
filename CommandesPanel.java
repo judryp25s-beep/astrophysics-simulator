@@ -123,7 +123,7 @@ public class CommandesPanel extends JPanel {
         groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.action_button);
         this.action_button.setText("Ajouter");
-        this.action_button.addMouseListener(new EcouteurBoutonAjouter());
+        this.action_button.addMouseListener(new EcouteurBoutonAjouter(this));
         this.add(groupe_composants);
 
     }
@@ -144,12 +144,12 @@ public class CommandesPanel extends JPanel {
 
         double mass_, temp_, vitx_, vity_, accx_, accy_, posx_, posy_, diamx_, diamy_;
 
-        if (nom == "" || diamx == "" || diamy == "" || posx == "" || posy == "") {
+        if (nom == null || nom.trim().isEmpty() || diamx == null || diamx.trim().isEmpty() || diamy == null || diamy.trim().isEmpty() || posx == null || posx.trim().isEmpty() || posy == null || posy.trim().isEmpty()) {
             System.out.println("Ajout impossible");
             return;
         }
 
-        if (temp == "") {
+        if (temp == null || temp.trim().isEmpty()) {
             temp_ = 0;
         } else {
             temp_ = Double.parseDouble(temp);
@@ -161,31 +161,31 @@ public class CommandesPanel extends JPanel {
         posx_ = Double.parseDouble(posx);
         posy_ = Double.parseDouble(posy);
 
-        if (accx == "") {
+        if (accx == null || accx.trim().isEmpty()) {
             accx_ = 0;
         } else {
             accx_ = Double.parseDouble(accx);
         }
 
-        if (mass == "") {
+        if (mass == null || mass.trim().isEmpty()) {
             mass_ = 0;
         } else {
             mass_ = Double.parseDouble(mass);
         }
 
-        if (accy == "") {
+        if (accy == null || accy.trim().isEmpty()) {
             accy_ = 0;
         } else {
             accy_ = Double.parseDouble(accy);
         }
 
-        if (vitx == "") {
+        if (vitx == null || vitx.trim().isEmpty()) {
             vitx_ = 0;
         } else {
             vitx_ = Double.parseDouble(vitx);
         }
 
-        if (vity == "") {
+        if (vity == null || vity.trim().isEmpty()) {
             vity_ = 0;
         } else {
             vity_ = Double.parseDouble(vity);
