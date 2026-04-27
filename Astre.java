@@ -8,7 +8,7 @@ public class Astre {
     private X_Y vitesse;
     private X_Y position;
     private Espace espace;
-    private double G = 6.674*0.001;
+    static double G = 6.674;
 
     public Astre(String nom, String description, double masse, X_Y diametre, double temperature, X_Y acceleration,
             X_Y vitesse, X_Y position) {
@@ -154,7 +154,7 @@ public class Astre {
 
     public double accelerationGAvec(Astre a) {
         double d = this.calculerDistance(a);
-        return a.getMasse()*this.G/d*d;
+        return a.getMasse()*Astre.G/d*d;
     }
 
     // distance entre deux astres

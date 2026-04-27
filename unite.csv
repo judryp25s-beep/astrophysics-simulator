@@ -1,0 +1,4 @@
+Type,Unité,Valeur de référence,Utilité
+Distance (UD),ua,1 ua = 1.496*10^11 m,Évite les erreurs de précision (float).
+Masse (UM),um,1 Soleil = 1 um = 1.989*10^30,Simplifie G dans les calculs de gravité.
+Taille,Échelle relative,log(diamètre),Permet de voir les planètes à l'écran.
