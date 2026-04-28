@@ -1,100 +1,102 @@
 import java.util.Vector;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.util.List;
 
 public class AstrePanel extends JPanel {
-    private Vector astres;
-    private int pause;
-    private double W_c, H_c;
-    private double lensMoveX, lensMoveY;
-    private double e;
-    private boolean stop;
-    private Astre focus;
+    private List<Astre> astres; // Use Generics
+    private int pauseTime = 16;   // ~60 FPS
+    private double offsetX, offsetY;
+    private double zoom = 1.0;
+    private boolean isPaused = true;
+    private Astre focusBody = null;
+    private double lensMoveX, lensMoveY, time_update;
 
-    public AstrePanel(Vector astres){
+    public AstrePanel(List<Astre> astres) {
         this.astres = astres;
-        this.pause = 5;
-        this.setBackground(Astre.DARK_BLUE);
-        this.e = 10;
-        this.W_c = this.getWidth()/2;
-        this.H_c = this.getHeight()/2;
-        this.lensMoveX = 0;
-        this.lensMoveY = 0;
-        this.stop = true;
-        this.focus = null;
+        this.setBackground(Color.decode("#000022")); // Dark Blue
+        this.time_update = 0.025;
+        
+        // Use a Swing Timer for the animation loop instead of Thread.sleep
+        Timer timer = new Timer(pauseTime, e -> {
+            updateSimulation();
+            repaint();
+        });
+        timer.start();
     }
 
-    public void setAstres(Vector astres) {
-        this.astres = astres;
-    }
-    public Vector getAstres() {
-        return astres;
-    }
+    private void updateSimulation() {
+        if (isPaused) return;
 
-    public void setW_c(int w_c) {
-        W_c = w_c;
-    }
-
-    public void setH_c(int h_c) {
-        H_c = h_c;
-    }
-
-    public void setE(double e) {
-        this.e = e;
-    }
-
-    public void paint(Graphics g){
-        super.paint(g);
-        g.setColor(Color.WHITE);
-        g.drawOval((int) this.W_c, (int) this.H_c, 10, 10);
-        g.drawOval((int) this.W_c, (int) this.H_c, (int) (10*this.e), (int) (10*this.e));
-
-        g.drawOval(0, 0, 10, 10);
-        g.drawOval(0, 0, (int) (10*this.e), (int) (10*this.e));
-        g.setColor(Color.BLACK);
-
-        for (int i = 0; i < astres.size(); i++){
-            Astre astre = (Astre) astres.get(i);
-            int posX = (int) astre.getPosition().getX();
-            int posY = (int) astre.getPosition().getY();
-
-            //int dx = (int) Math.log(10*astre.getDiametre().getX()*10);
-            //int dy = (int) Math.log(10*astre.getDiametre().getY()*10);
-
-            int dx = (int) astre.getDiametre().getX();
-            int dy = (int) astre.getDiametre().getY();
-            if (this.focus != null && this.focus == astre) g.setColor(Color.BLUE);
-            g.drawOval(
-                (int) (e*(posX + this.W_c)),
-                (int) (e*(posY + this.H_c)),
-                (int) e*dx,
-                (int) e*dy
-            );
-            g.setColor(Astre.JUPITER);
-            g.fillOval(
-                (int) (e*(posX + this.W_c)),
-                (int) (e*(posY + this.H_c)),
-                (int) e*dx,
-                (int) e*dy
-            );
-            if (!this.stop) astre.update(this.pause*0.005);
+        for (Astre a : astres) {
+            // Update physics (assuming update takes dt)
+            a.update(this.time_update); 
         }
-        this.W_c += this.lensMoveX;
-        this.H_c += this.lensMoveY;
 
-
-        try {
-            Thread.sleep(this.pause);
-        } catch (Exception e) {
-            // TODO: handle exception
+        // If focusing on a body, center the camera on it
+        if (focusBody != null) {
+            this.offsetX = -focusBody.getPosition().getX();
+            this.offsetY = -focusBody.getPosition().getY();
         }
-        repaint();
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
+
+        double vScale = 10.0; 
+        double aScale = 50.0;
+
+        // On synchronise sur la liste pour éviter le crash pendant le dessin
+        synchronized(astres) {
+            for (Astre a : astres) {
+                a.paint(
+                    g2d, 
+                    centerX, centerY, 
+                    offsetX, offsetY, 
+                    zoom, 
+                    vScale, aScale, 
+                    (a == focusBody) // Le booléen isFocused
+                );
+            }
+        }
+    }
+        
     public void toggleStop() {
-        this.stop = !this.stop;
-        System.out.println("Toggle " + this.stop);
+        this.isPaused = !this.isPaused;
+    }
+
+    public void zoomLens(double factor) {
+        this.zoom *= factor;
+    }
+
+    public Astre verifierFocus(double mouseX, double mouseY) {
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
+
+        for (Astre a : astres) {
+            // Reverse the drawing math to find the body under the mouse
+            double screenX = centerX + (a.getPosition().getX() + offsetX) * zoom;
+            double screenY = centerY + (a.getPosition().getY() + offsetY) * zoom;
+            double sizeW = a.getDiametre().getX() * zoom;
+
+            // Simple distance check or bounding box
+            if (Math.abs(mouseX - screenX) < sizeW && Math.abs(mouseY - screenY) < sizeW) {
+                this.focusBody = a;
+                return a;
+            }
+        }
+        this.focusBody = null;
+        return null;
     }
 
     public void moveLens(double dx, double dy) {
@@ -107,30 +109,7 @@ public class AstrePanel extends JPanel {
         System.out.println("Move " + dx + " -> " + this.lensMoveX + ", " + dy + " -> " + this.lensMoveY);
     }
 
-    public void zoomLens(double f) {
-        if (this.e >= 0.001) this.e *= f;
-        System.out.println("Zoom " + f + " -> " + this.e);
-
+    public void time_update(double time) {
+        this.time_update *= time;
     }
-
-
-    public Astre verifierFocus(double x, double y) {
-        for (int i = 0; i < this.astres.size(); i++) {
-            Astre a = (Astre) this.astres.get(i);
-            int xp = (int) a.getPosition().getX();
-            int yp = (int) a.getPosition().getY();
-            if (
-                x >= (xp - 0.5)* this.e
-                && x <= (xp + 0.5)*this.e
-                && y >= (yp - 0.5)*this.e
-                && y <= (yp + 0.5)*this.e
-            ) {
-                this.focus = a;
-                return a;
-            }
-        }
-        this.focus = null;
-        return null;
-    }
-
 }

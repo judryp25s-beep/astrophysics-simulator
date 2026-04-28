@@ -1,18 +1,18 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-public class EcouteurFocusPanel implements MouseListener {
+public class EcouteurBoutonTime implements MouseListener {
 
     private AstrePanel AP;
+    private double time;
 
-    public EcouteurFocusPanel(AstrePanel AP) {
+    public EcouteurBoutonTime(AstrePanel AP, double time) {
         this.AP = AP;
+        this.time = time;
     }
 
     public void mouseClicked(MouseEvent e){
-        System.out.println("Clic sur le panel !");
-        AP.verifierFocus(e.getX(), e.getY());
+        AP.time_update(this.time);
     }
-    
     public void mouseEntered(MouseEvent e){}
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}

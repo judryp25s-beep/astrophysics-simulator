@@ -5,10 +5,10 @@ public class CommandesPanel extends JPanel {
 
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
-    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button, moveR_button;
+    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button, moveR_button, time_sp, time_sl;
     private Espace espace;
     private Fenetre fenetre;
-    private double zoom = 2;
+    private double zoom = 1.1;
     private double move = 0.1;
 
     public CommandesPanel(Fenetre fenetre) {
@@ -63,6 +63,14 @@ public class CommandesPanel extends JPanel {
         this.pause_play_button = new JButton();
         this.pause_play_button.setText("▷||");
         this.pause_play_button.addMouseListener(new EcouteurBoutonPause(this.fenetre.getAstre_panel()));
+
+        this.time_sp = new JButton();
+        this.time_sp.setText(">>");
+        this.time_sp.addMouseListener(new EcouteurBoutonTime(this.fenetre.getAstre_panel(), 1.25));
+
+        this.time_sl = new JButton();
+        this.time_sl.setText("<<");
+        this.time_sl.addMouseListener(new EcouteurBoutonTime(this.fenetre.getAstre_panel(), 0.25));
 
         this.moveR_button = new JButton();
         this.moveR_button.setText("↻");
@@ -164,12 +172,15 @@ public class CommandesPanel extends JPanel {
         groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.movet_button);
         groupe_composants.add(this.moved_button);
+        groupe_composants.add(this.moveR_button);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.zoomp_button);
         groupe_composants.add(this.zoomn_button);
+        groupe_composants.add(this.time_sl);
+        groupe_composants.add(this.time_sp);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();

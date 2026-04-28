@@ -1,12 +1,14 @@
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.List;
 
 public class Espace {
     private String nom;
-    private Vector astres;
+    private List<Astre> astres;
 
     public Espace(String nom) {
         this.nom = nom;
-        this.astres = new Vector();
+        this.astres = new CopyOnWriteArrayList<>();
     }
 
     public String getNom() {
@@ -17,11 +19,11 @@ public class Espace {
         this.nom = nom;
     }
 
-    public Vector getAstres() {
+    public List getAstres() {
         return astres;
     }
 
-    public void setAstres(Vector astres) {
+    public void setAstres(List astres) {
         this.astres = astres;
     }
 

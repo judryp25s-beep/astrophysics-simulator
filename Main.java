@@ -9,7 +9,7 @@ public class Main {
         // --- CHOISISSEZ LE SYSTÈME À AFFICHER ---
         // creerSystemeSolaire(espace);
         // creerSystemeBistellaire(espace);
-        //creerSystemeTristellaire(espace);
+        creerSystemeTristellaire(espace);
         // creerCasVitesses(espace);
 
         new Fenetre(espace);
@@ -47,7 +47,7 @@ public class Main {
      */
     public static void creerSystemeTristellaire(Espace e) {
         double rayon = 150;
-        double v = 100;
+        double v = 10;
 
         // Étoile 1 (Haut)
         e.ajouterAstre("Alpha", "Cyan", MSoleil, 25, 25, 0, 0, 0, v, 0, 0, rayon);
