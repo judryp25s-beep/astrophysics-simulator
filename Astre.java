@@ -144,7 +144,7 @@ public class Astre {
 
         this.position.setX(px+dx);
         this.position.setY(py+dy);
-        System.out.println("Déplacement de " + this.getNom() + " " + px + ", " + py + " de " + dx + ", " + dy);
+        //System.out.println("Déplacement de " + this.getNom() + " " + px + ", " + py + " de " + dx + ", " + dy);
 
 
     }
@@ -173,7 +173,7 @@ public class Astre {
             double da = this.accelerationGAvec(a);
             dax += dx*da/d;
             day += dy*da/d;
-            System.out.println("Acceleration " + this.nom + " " + a.getNom() + " " + dax + " " + day + " " + this.acceleration.getX() + " " + this.acceleration.getY());
+            //System.out.println("Acceleration " + this.nom + " " + a.getNom() + " " + dax + " " + day + " " + this.acceleration.getX() + " " + this.acceleration.getY());
         }
         this.acceleration.setX(dax);
         this.acceleration.setY(day);

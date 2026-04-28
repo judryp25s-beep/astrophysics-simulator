@@ -1,6 +1,6 @@
-# implémenter la fusion-collision entre deux astres
-## Astre.verifyCollision(Astre) centre à contour / contour à centre
-## Astre.fusionner(Astre) crée un nouvel Astre
+# implémenter la fusion-collision entre deux astres (done)
+## Astre.verifyCollision(Astre) centre à contour / contour à centre (done)
+## Astre.fusionner(Astre) crée un nouvel Astre (done)
 - M = m + m'
 - D = d + d'
 - T = (d/d')t + (d'/d)t'

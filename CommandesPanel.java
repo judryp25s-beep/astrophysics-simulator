@@ -5,11 +5,14 @@ public class CommandesPanel extends JPanel {
 
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
-    private JButton action_button;
+    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button;
     private Espace espace;
+    private Fenetre fenetre;
 
-    public CommandesPanel(Espace espace) {
-        this.espace = espace;
+    public CommandesPanel(Fenetre fenetre) {
+        this.espace = fenetre.getEspace();
+        this.fenetre = fenetre;
+        System.out.println("Titre " + this.fenetre.getTitle());
         JPanel groupe_composants;
 
         this.setBackground(new Color(240, 240, 240));
@@ -29,6 +32,33 @@ public class CommandesPanel extends JPanel {
         this.temp_tf = new JTextField(tf_width);
         this.mass_tf = new JTextField(tf_width);
         this.action_button = new JButton();
+
+        this.zoomp_button = new JButton();
+        this.zoomp_button.setText("+");
+        this.zoomp_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), 1.75));
+
+        this.zoomn_button = new JButton();
+        this.zoomn_button.setText("-");
+        this.zoomn_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), 0.75));
+
+        this.movel_button = new JButton();
+        this.movel_button.setText("←");
+        this.movel_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),100, 0));
+        
+        this.mover_button = new JButton();
+        this.mover_button.setText("→");
+        this.mover_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),-100, 0));
+
+
+        this.movet_button = new JButton();
+        this.movet_button.setText("↑");
+        this.movet_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, -100));
+
+
+        this.moved_button = new JButton();
+        this.moved_button.setText("↓");
+        this.moved_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, 100));
+
 
         JLabel nom_l = new JLabel("Nom   ");
         JLabel desc_l = new JLabel("Desc  ");
@@ -115,9 +145,23 @@ public class CommandesPanel extends JPanel {
         groupe_composants.add(this.posy_tf);
         this.add(groupe_composants);
 
-        this.add(new JLabel());
-        this.add(new JLabel());
-        this.add(new JLabel());
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.movel_button);
+        groupe_composants.add(this.mover_button);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.movet_button);
+        groupe_composants.add(this.moved_button);
+        this.add(groupe_composants);
+
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.zoomp_button);
+        groupe_composants.add(this.zoomn_button);
+        this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());

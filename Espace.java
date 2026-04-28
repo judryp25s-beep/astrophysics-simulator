@@ -43,6 +43,7 @@ public class Espace {
 
     public void retirerAstre(Astre a) {
         this.astres.remove(a);
+        a = null;
     }
 
     public int retirerAstre(String nom) {

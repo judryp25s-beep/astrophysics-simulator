@@ -6,11 +6,16 @@ import javax.swing.JPanel;
 public class AstrePanel extends JPanel {
     private Vector astres;
     private int pause;
+    private int W_c, H_c;
+    private double e;
 
     AstrePanel(Vector astres){
         this.astres = astres;
         this.pause = 5;
         this.setBackground(Astre.DARK_BLUE);
+        this.W_c = (int) this.getWidth()/2;
+        this.H_c = (int) this.getHeight()/2;
+        this.e = 10;
     }
 
     public void setAstres(Vector astres) {
@@ -18,6 +23,18 @@ public class AstrePanel extends JPanel {
     }
     public Vector getAstres() {
         return astres;
+    }
+
+    public void setW_c(int w_c) {
+        W_c = w_c;
+    }
+
+    public void setH_c(int h_c) {
+        H_c = h_c;
+    }
+
+    public void setE(double e) {
+        this.e = e;
     }
 
     public void paint(Graphics g){
@@ -31,9 +48,19 @@ public class AstrePanel extends JPanel {
 
             int dx = (int) Math.log(10*astre.getDiametre().getX()*10);
             int dy = (int) Math.log(10*astre.getDiametre().getY()*10);
-            g.drawOval(posX, posY, dx, dy);
+            g.drawOval(
+                (int) e*(posX + this.W_c),
+                (int) e*(posY + this.H_c),
+                (int) e*dx,
+                (int) e*dy
+            );
             g.setColor(Astre.JUPITER);
-            g.fillOval(posX, posY, dx, dy);
+            g.drawOval(
+                (int) e*(posX + this.W_c),
+                (int) e*(posY + this.H_c),
+                (int) e*dx,
+                (int) e*dy
+            );
             astre.update(this.pause*0.005);
         }
 
@@ -44,6 +71,18 @@ public class AstrePanel extends JPanel {
             // TODO: handle exception
         }
        repaint();
+    }
+
+    public void moveLens(int dx, int dy) {
+        this.W_c += dx;
+        this.H_c += dy; 
+        System.out.println("Move " + dx + " -> " + this.W_c + ", " + dy + " -> " + this.H_c);
+    }
+
+    public void zoomLens(double f) {
+        this.e *= f;
+        System.out.println("Zoom " + f + " -> " + this.e);
+
     }
 
 }
