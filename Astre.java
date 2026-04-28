@@ -187,10 +187,24 @@ public class Astre {
     // distance entre deux astres
     // voir si deux astres sont en colision (diamètre contre centre)
 
+    public void updateCollision(double dt) {
+        for (int i = 0; i < this.espace.getAstres().size(); i++) {
+            Astre a = (Astre) this.espace.getAstres().get(i);
+            if (a == this) continue;
+            if (this.verifyCollision(a)) {
+                Astre A = this.fusion(a);
+                this.espace.ajouterAstre(A);
+                this.espace.retirerAstre(a);
+                this.espace.retirerAstre(this);
+            }
+        }
+    }
+
     public void update(double dt) {
         this.updatePosition(dt);
         this.updateVitesse(dt);
         this.updateAcceleration(dt);
+        this.updateCollision(dt);
     }
 
     public double calculerDistance(Astre a){
@@ -203,6 +217,40 @@ public class Astre {
         
         d = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1), 2));
         return d;
+    }
+
+    public boolean verifyCollision(Astre a) {
+        double dx = this.diametre.getX();
+        double dy = this.diametre.getY();
+        double x = this.position.getX();
+        double y = this.position.getY();
+        double x_ = a.getPosition().getX();
+        double y_ = a.getPosition().getY();
+        if (
+            (x - dx <= x_) &&
+            (x + dx >= x_) && 
+            (y - dy <= y_) && 
+            (y +  dy >= y_)
+        ) return true;
+        return false;
+    }
+
+    public Astre fusion(Astre a) {
+        String N = this.nom + a.getNom();
+        String D = this.description + " fusionné avec " + a.getDescription();
+        double M = this.masse + a.getMasse();
+        double dx = this.diametre.getX() + a.getDiametre().getX();
+        double dy = this.diametre.getY() + a.getDiametre().getY();
+        double px = (this.position.getX() + a.getPosition().getX())/2;
+        double py = (this.position.getY() + a.getPosition().getY())/2;
+        double vx = (this.masse * this.vitesse.getX() + a.getMasse() * a.getVitesse().getX()) / (this.masse + a.getMasse());
+        double vy = (this.masse * this.vitesse.getY() + a.getMasse() * a.getVitesse().getY()) / (this.masse + a.getMasse());
+        double ax = (this.masse * this.acceleration.getX() + a.getMasse() * a.getAcceleration().getX()) / (this.masse + a.getMasse());
+        double ay = (this.masse * this.acceleration.getY() + a.getMasse() * a.getAcceleration().getY()) / (this.masse + a.getMasse());
+        double T = (this.masse * this.temperature + a.getMasse() * a.getTemperature()) / (this.masse + a.getMasse());
+
+        Astre A = new Astre(N, D, M, dx, dy, T, ax, ay, vx, vy, px, py);
+        return A;
     }
 
 }

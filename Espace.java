@@ -41,6 +41,10 @@ public class Espace {
         return 0;
     }
 
+    public void retirerAstre(Astre a) {
+        this.astres.remove(a);
+    }
+
     public int retirerAstre(String nom) {
         for (int i = 0; i < this.astres.size(); i++) {
             Astre current_astre = (Astre) this.astres.get(i);
