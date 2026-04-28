@@ -9,7 +9,7 @@ public class Main {
         // --- CHOISISSEZ LE SYSTÈME À AFFICHER ---
         // creerSystemeSolaire(espace);
         // creerSystemeBistellaire(espace);
-        creerSystemeTristellaire(espace);
+        //creerSystemeTristellaire(espace);
         // creerCasVitesses(espace);
 
         new Fenetre(espace);
@@ -34,7 +34,7 @@ public class Main {
      * Deux soleils qui gravitent l'un autour de l'autre
      */
     public static void creerSystemeBistellaire(Espace e) {
-        double dist = 100;
+        double dist = 5;
         // Pour un système binaire stable, la vitesse est v = sqrt(Astre.G * M_total / (4 * dist))
         double v = 10;
 

@@ -5,9 +5,11 @@ public class CommandesPanel extends JPanel {
 
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
-    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button;
+    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button;
     private Espace espace;
     private Fenetre fenetre;
+    private double zoom = 2;
+    private int move = 50;
 
     public CommandesPanel(Fenetre fenetre) {
         this.espace = fenetre.getEspace();
@@ -35,29 +37,33 @@ public class CommandesPanel extends JPanel {
 
         this.zoomp_button = new JButton();
         this.zoomp_button.setText("+");
-        this.zoomp_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), 1.75));
+        this.zoomp_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), this.zoom));
 
         this.zoomn_button = new JButton();
         this.zoomn_button.setText("-");
-        this.zoomn_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), 0.75));
+        this.zoomn_button.addMouseListener(new EcouteurBoutonZoom(this.fenetre.getAstre_panel(), 1/this.zoom));
 
         this.movel_button = new JButton();
         this.movel_button.setText("←");
-        this.movel_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),100, 0));
+        this.movel_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),this.move, 0));
         
         this.mover_button = new JButton();
         this.mover_button.setText("→");
-        this.mover_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),-100, 0));
+        this.mover_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),-this.move, 0));
 
 
         this.movet_button = new JButton();
         this.movet_button.setText("↑");
-        this.movet_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, -100));
+        this.movet_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, this.move));
 
 
         this.moved_button = new JButton();
         this.moved_button.setText("↓");
-        this.moved_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, 100));
+        this.moved_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0, -this.move));
+
+        this.pause_play_button = new JButton();
+        this.pause_play_button.setText("▷||");
+        this.pause_play_button.addMouseListener(new EcouteurBoutonPause(this.fenetre.getAstre_panel()));
 
 
         JLabel nom_l = new JLabel("Nom   ");
@@ -165,6 +171,7 @@ public class CommandesPanel extends JPanel {
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.pause_play_button);
         groupe_composants.add(this.action_button);
         this.action_button.setText("Ajouter");
         this.action_button.addMouseListener(new EcouteurBoutonAjouter(this));

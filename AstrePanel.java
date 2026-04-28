@@ -8,14 +8,16 @@ public class AstrePanel extends JPanel {
     private int pause;
     private int W_c, H_c;
     private double e;
+    private boolean stop;
 
     AstrePanel(Vector astres){
         this.astres = astres;
         this.pause = 5;
         this.setBackground(Astre.DARK_BLUE);
+        this.e = 10;
         this.W_c = (int) this.getWidth()/2;
         this.H_c = (int) this.getHeight()/2;
-        this.e = 10;
+        this.stop = true;
     }
 
     public void setAstres(Vector astres) {
@@ -46,8 +48,11 @@ public class AstrePanel extends JPanel {
             int posX = (int) astre.getPosition().getX();
             int posY = (int) astre.getPosition().getY();
 
-            int dx = (int) Math.log(10*astre.getDiametre().getX()*10);
-            int dy = (int) Math.log(10*astre.getDiametre().getY()*10);
+            //int dx = (int) Math.log(10*astre.getDiametre().getX()*10);
+            //int dy = (int) Math.log(10*astre.getDiametre().getY()*10);
+
+            int dx = (int) astre.getDiametre().getX();
+            int dy = (int) astre.getDiametre().getY();
             g.drawOval(
                 (int) e*(posX + this.W_c),
                 (int) e*(posY + this.H_c),
@@ -55,13 +60,13 @@ public class AstrePanel extends JPanel {
                 (int) e*dy
             );
             g.setColor(Astre.JUPITER);
-            g.drawOval(
+            g.fillOval(
                 (int) e*(posX + this.W_c),
                 (int) e*(posY + this.H_c),
                 (int) e*dx,
                 (int) e*dy
             );
-            astre.update(this.pause*0.005);
+            if (!stop) astre.update(this.pause*0.005);
         }
 
 
@@ -70,7 +75,12 @@ public class AstrePanel extends JPanel {
         } catch (Exception e) {
             // TODO: handle exception
         }
-       repaint();
+        repaint();
+    }
+
+    public void toggleStop() {
+        this.stop = !this.stop;
+        System.out.println("Toggle " + this.stop);
     }
 
     public void moveLens(int dx, int dy) {
