@@ -5,16 +5,15 @@ public class CommandesPanel extends JPanel {
 
     private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
-    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button;
+    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button, moveR_button;
     private Espace espace;
     private Fenetre fenetre;
     private double zoom = 2;
-    private int move = 50;
+    private double move = 0.1;
 
     public CommandesPanel(Fenetre fenetre) {
         this.espace = fenetre.getEspace();
         this.fenetre = fenetre;
-        System.out.println("Titre " + this.fenetre.getTitle());
         JPanel groupe_composants;
 
         this.setBackground(new Color(240, 240, 240));
@@ -64,6 +63,10 @@ public class CommandesPanel extends JPanel {
         this.pause_play_button = new JButton();
         this.pause_play_button.setText("▷||");
         this.pause_play_button.addMouseListener(new EcouteurBoutonPause(this.fenetre.getAstre_panel()));
+
+        this.moveR_button = new JButton();
+        this.moveR_button.setText("↻");
+        this.moveR_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0,0));
 
 
         JLabel nom_l = new JLabel("Nom   ");

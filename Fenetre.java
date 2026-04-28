@@ -9,6 +9,7 @@ public class Fenetre extends JFrame {
     public Fenetre(Espace espace){
         this.espace = espace;
         this.astre_panel = new AstrePanel(espace.getAstres());
+        this.astre_panel.addMouseListener(new EcouteurFocusPanel(this.astre_panel));
         this.commandes = new CommandesPanel(this);
         this.setTitle(espace.getNom());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);

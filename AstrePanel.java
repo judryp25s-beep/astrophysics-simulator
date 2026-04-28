@@ -6,18 +6,23 @@ import javax.swing.JPanel;
 public class AstrePanel extends JPanel {
     private Vector astres;
     private int pause;
-    private int W_c, H_c;
+    private double W_c, H_c;
+    private double lensMoveX, lensMoveY;
     private double e;
     private boolean stop;
+    private Astre focus;
 
-    AstrePanel(Vector astres){
+    public AstrePanel(Vector astres){
         this.astres = astres;
         this.pause = 5;
         this.setBackground(Astre.DARK_BLUE);
         this.e = 10;
-        this.W_c = (int) this.getWidth()/2;
-        this.H_c = (int) this.getHeight()/2;
+        this.W_c = this.getWidth()/2;
+        this.H_c = this.getHeight()/2;
+        this.lensMoveX = 0;
+        this.lensMoveY = 0;
         this.stop = true;
+        this.focus = null;
     }
 
     public void setAstres(Vector astres) {
@@ -41,6 +46,12 @@ public class AstrePanel extends JPanel {
 
     public void paint(Graphics g){
         super.paint(g);
+        g.setColor(Color.WHITE);
+        g.drawOval((int) this.W_c, (int) this.H_c, 10, 10);
+        g.drawOval((int) this.W_c, (int) this.H_c, (int) (10*this.e), (int) (10*this.e));
+
+        g.drawOval(0, 0, 10, 10);
+        g.drawOval(0, 0, (int) (10*this.e), (int) (10*this.e));
         g.setColor(Color.BLACK);
 
         for (int i = 0; i < astres.size(); i++){
@@ -53,21 +64,24 @@ public class AstrePanel extends JPanel {
 
             int dx = (int) astre.getDiametre().getX();
             int dy = (int) astre.getDiametre().getY();
+            if (this.focus != null && this.focus == astre) g.setColor(Color.BLUE);
             g.drawOval(
-                (int) e*(posX + this.W_c),
-                (int) e*(posY + this.H_c),
+                (int) (e*(posX + this.W_c)),
+                (int) (e*(posY + this.H_c)),
                 (int) e*dx,
                 (int) e*dy
             );
             g.setColor(Astre.JUPITER);
             g.fillOval(
-                (int) e*(posX + this.W_c),
-                (int) e*(posY + this.H_c),
+                (int) (e*(posX + this.W_c)),
+                (int) (e*(posY + this.H_c)),
                 (int) e*dx,
                 (int) e*dy
             );
-            if (!stop) astre.update(this.pause*0.005);
+            if (!this.stop) astre.update(this.pause*0.005);
         }
+        this.W_c += this.lensMoveX;
+        this.H_c += this.lensMoveY;
 
 
         try {
@@ -83,16 +97,40 @@ public class AstrePanel extends JPanel {
         System.out.println("Toggle " + this.stop);
     }
 
-    public void moveLens(int dx, int dy) {
-        this.W_c += dx;
-        this.H_c += dy; 
-        System.out.println("Move " + dx + " -> " + this.W_c + ", " + dy + " -> " + this.H_c);
+    public void moveLens(double dx, double dy) {
+        this.lensMoveX+=dx;
+        this.lensMoveY+=dy; 
+        if (dx == 0 && dy == 0) {
+            this.lensMoveX = 0;
+            this.lensMoveY = 0;
+        }
+        System.out.println("Move " + dx + " -> " + this.lensMoveX + ", " + dy + " -> " + this.lensMoveY);
     }
 
     public void zoomLens(double f) {
-        this.e *= f;
+        if (this.e >= 0.001) this.e *= f;
         System.out.println("Zoom " + f + " -> " + this.e);
 
+    }
+
+
+    public Astre verifierFocus(double x, double y) {
+        for (int i = 0; i < this.astres.size(); i++) {
+            Astre a = (Astre) this.astres.get(i);
+            int xp = (int) a.getPosition().getX();
+            int yp = (int) a.getPosition().getY();
+            if (
+                x >= (xp - 0.5)* this.e
+                && x <= (xp + 0.5)*this.e
+                && y >= (yp - 0.5)*this.e
+                && y <= (yp + 0.5)*this.e
+            ) {
+                this.focus = a;
+                return a;
+            }
+        }
+        this.focus = null;
+        return null;
     }
 
 }
