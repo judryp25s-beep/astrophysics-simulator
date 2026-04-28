@@ -38,7 +38,7 @@ public class Main {
     public static void creerSystemeBistellaire(Espace e) {
         double dist = 100;
         // Pour un système binaire stable, la vitesse est v = sqrt(Astre.G * M_total / (4 * dist))
-        double v = Math.sqrt(Astre.G * (MSoleil + MSoleil) / (4 * dist));
+        double v = 10;
 
         e.ajouterAstre("Soleil A", "Yellow", MSoleil, 30, 30, 0, 0, 0, v, 0, cx, cy + dist);
         e.ajouterAstre("Soleil B", "Orange", MSoleil, 30, 30, 0, 0, 0, -v, 0, cx, cy - dist);

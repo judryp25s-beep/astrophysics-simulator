@@ -1,4 +1,14 @@
 # implémenter la fusion-collision entre deux astres
+## Astre.verifyCollision(Astre) centre à contour / contour à centre
+## Astre.fusionner(Astre) crée un nouvel Astre
+- M = m + m'
+- D = d + d'
+- T = (d/d')t + (d'/d)t'
+- P = (p + p')/2
+- A = (ma + m'a') / (m + m')
+- V = (mv + m'v') / (m + m')
+- Nom = nom concat nom'
+- Desc = (desc) + " fusionné avec " (desc')
 
 # ajout de changement de coordonnées
 Ajouter une translation des position, tout ramener au centre
