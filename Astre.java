@@ -13,12 +13,29 @@ public class Astre {
     private X_Y position;
     private Espace espace;
     static double G = 6674;
-    
-    private Color couleur = SUN_WHITE;
 
-    // --- CONSTANTES DE COULEURS ---
+    public static final Color DARK_BLUE = new Color(10, 10, 25);
+    // Planètes
+    public static final Color MERCURY = new Color(165, 165, 165);
+    public static final Color VENUS = new Color(227, 220, 175);
+    public static final Color MARS = new Color(193, 68, 14);
+    public static final Color JUPITER = new Color(216, 202, 157);
+    public static final Color SATURN = new Color(191, 155, 95);
+    public static final Color URANUS = new Color(209, 231, 231);
+    public static final Color NEPTUNE = new Color(63, 130, 242);
+    // Étoiles
+    public static final Color RED_DWARF = new Color(255, 82, 0);
     public static final Color SUN_WHITE = new Color(255, 255, 240);
-    // ... (garde tes autres constantes ici)
+    public static final Color BLUE_GIANT = new Color(155, 176, 255);
+    public static final Color WHITE_DWARF = new Color(248, 247, 255);
+    // Trous Noirs et Blancs
+    public static final Color BLACK_HOLE_DISK = new Color(255, 140, 0);
+    public static final Color WHITE_HOLE = new Color(255, 255, 255);
+    // Espace Profond
+    public static final Color NEBULA_PINK = new Color(255, 0, 102);
+    public static final Color COSMIC_LATTE = new Color(255, 248, 231);
+    private Color couleur = SUN_WHITE;
+    public Astre() {};
 
     public Astre(String nom, String description, double masse, double dx, double dy, double temperature, double ax,
             double ay, double vx, double vy, double px, double py) {
@@ -103,15 +120,33 @@ public class Astre {
             if (a == this) continue;
 
             if (this.verifyCollision(a)) {
-                Astre fusionne = this.fusion(a);
-                this.espace.ajouterAstre(fusionne);
-                this.espace.retirerAstre(a);
-                this.espace.retirerAstre(this);
+                this.fusion(a);
                 break; // On arrête pour cet astre car il n'existe plus
             }
         }
     }
 
+// Dans la classe Astre
+    public void absorber(Astre a) {
+        double masseTotale = this.masse + a.getMasse();
+        
+        // Ton calcul de conservation de la quantité de mouvement
+        double vx = (this.masse * this.vitesse.getX() + a.getMasse() * a.getVitesse().getX()) / masseTotale;
+        double vy = (this.masse * this.vitesse.getY() + a.getMasse() * a.getVitesse().getY()) / masseTotale;
+        
+        // Ton calcul de diamètre (basé sur la racine carrée des carrés)
+        double nouveauDiam = Math.sqrt(Math.pow(this.diametre.getX(), 2) + Math.pow(a.getDiametre().getX(), 2));
+
+        // Mise à jour de l'astre actuel (this)
+        this.masse = masseTotale;
+        this.diametre.setX(nouveauDiam);
+        this.diametre.setY(nouveauDiam);
+        this.vitesse.setX(vx);
+        this.vitesse.setY(vy);
+        this.temperature = (this.temperature + a.getTemperature()) / 2;
+        this.nom = this.nom + "+" + a.getNom();
+        this.espace.retirerAstre(a);
+    }
     public Astre fusion(Astre a) {
         double masseTotale = this.masse + a.getMasse();
         
@@ -166,6 +201,15 @@ public class Astre {
         g2d.setColor(Color.WHITE); 
         g2d.fillOval(topLeftX, topLeftY, sizeW, sizeH);
 
+        this.paintVectors(g2d, centerX, centerY, offsetX, offsetY, zoom, vScale, aScale);
+    }
+
+    public void paintVectors(Graphics2D g2d, int centerX, int centerY, double offsetX, double offsetY, double zoom, double vScale, double aScale) {
+        // 1. Calcul de la position à l'écran (basé sur le centre de l'astre)
+        // On suppose que getPosition() renvoie le centre
+        int drawX = (int) (centerX + (this.getPosition().getX() + offsetX) * zoom);
+        int drawY = (int) (centerY + (this.getPosition().getY() + offsetY) * zoom);
+
         // 3. Traçage du vecteur Vitesse (Vert)
         g2d.setColor(Color.GREEN);
         int vEndX = (int) (drawX + this.getVitesse().getX() * vScale * zoom);
@@ -178,6 +222,7 @@ public class Astre {
         int aEndY = (int) (drawY + this.getAcceleration().getY() * aScale * zoom);
         g2d.drawLine(drawX, drawY, aEndX, aEndY);
     }
+
 
     // --- GETTERS / SETTERS ---
     public X_Y getPosition() { return position; }
@@ -197,4 +242,58 @@ public class Astre {
     }
     public void setEspace(Espace e) { this.espace = e; }
     public String getNom() { return nom; }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setMasse(double masse) {
+        this.masse = masse;
+    }
+
+    public void setDiametre(double x, double y) {
+        this.diametre = new X_Y(x, y);
+    }
+
+    public void setDiametre(double diam) {
+        this.diametre = new X_Y(diam, diam);
+    }
+
+    public void setAcceleration(double x, double y) {
+        this.acceleration = new X_Y(x, y);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPosition(double x, double y) {
+        this.position = new X_Y(x, y);
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getGlobalAcceleration() {
+        return Math.sqrt(
+            Math.pow(this.acceleration.getX(), 2) +
+            Math.pow(this.acceleration.getY(), 2)
+        );
+    }
+
+    public double getGlobalVitesse() {
+        return Math.sqrt(
+            Math.pow(this.vitesse.getX(), 2) +
+            Math.pow(this.vitesse.getY(), 2)
+        );
+    }
+
+    public void setVitesse(double x, double y) {
+        this.vitesse = new X_Y(x, y);
+    }
+
+    public Espace getEspace() {
+        return espace;
+    }
+
 }

@@ -11,6 +11,7 @@ public class Fenetre extends JFrame {
         this.astre_panel = new AstrePanel(espace.getAstres());
         this.astre_panel.addMouseListener(new EcouteurFocusPanel(this.astre_panel));
         this.commandes = new CommandesPanel(this);
+        this.astre_panel.setCmd(this.commandes);
         this.setTitle(espace.getNom());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new BorderLayout());

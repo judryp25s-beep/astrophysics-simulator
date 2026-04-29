@@ -1,15 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Locale;
 
 public class CommandesPanel extends JPanel {
 
-    private JTextField nom_tf, desc_tf, diamx_tf, diamy_tf, accx_tf, accy_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
+    private JTextField nom_tf, desc_tf, diam_tf, vitx_tf, vity_tf, posx_tf, posy_tf, temp_tf, mass_tf;
 
-    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button, moveR_button, time_sp, time_sl;
+    private JButton action_button, zoomp_button, zoomn_button, movel_button, mover_button, movet_button, moved_button, pause_play_button, moveR_button, time_sp, time_sl, edit_button, remove_button;
+    private JScrollPane astre_type_panel;
+    private JList<String> astre_liste;
+    
     private Espace espace;
     private Fenetre fenetre;
     private double zoom = 1.1;
-    private double move = 0.1;
+    private double move = 1;
 
     public CommandesPanel(Fenetre fenetre) {
         this.espace = fenetre.getEspace();
@@ -19,13 +23,10 @@ public class CommandesPanel extends JPanel {
         this.setBackground(new Color(240, 240, 240));
         this.setLayout(new GridLayout(4, 4, 10, 10));
 
-        int tf_width = 8;
+        int tf_width = 15;
         this.nom_tf = new JTextField(tf_width);
         this.desc_tf = new JTextField(tf_width);
-        this.diamx_tf = new JTextField(tf_width);
-        this.diamy_tf = new JTextField(tf_width);
-        this.accx_tf = new JTextField(tf_width);
-        this.accy_tf = new JTextField(tf_width);
+        this.diam_tf = new JTextField(tf_width);
         this.vitx_tf = new JTextField(tf_width);
         this.vity_tf = new JTextField(tf_width);
         this.posx_tf = new JTextField(tf_width);
@@ -76,18 +77,34 @@ public class CommandesPanel extends JPanel {
         this.moveR_button.setText("↻");
         this.moveR_button.addMouseListener(new EcouteurBoutonMove(this.fenetre.getAstre_panel(),0,0));
 
+        String[] data = {"Planète", "Étoile", "Trou noir", "Trou blanc"};
+        this.astre_liste = new JList<>(data);
+        this.astre_type_panel = new JScrollPane(this.astre_liste);
+        this.astre_liste.setVisibleRowCount(1); // N'affiche qu'une ligne
+        this.astre_liste.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Masquer la barre horizontale, laisser la verticale si besoin (ou l'inverse)
+        this.astre_type_panel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        this.astre_type_panel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+
+        this.edit_button = new JButton();
+        this.edit_button.setText("✎");
+        this.edit_button.addMouseListener(new EcouteurBoutonEditer(this));
+
+        this.remove_button = new JButton();
+        this.remove_button.setText("x");
+        this.remove_button.addMouseListener(new EcouteurBoutonEffacer(this));
+
 
         JLabel nom_l = new JLabel("Nom   ");
         JLabel desc_l = new JLabel("Desc  ");
         JLabel mass_l = new JLabel("Mass  ");
-        JLabel diamx_l = new JLabel("Diamx ");
-        JLabel diamy_l = new JLabel("Diamy ");
-        JLabel accx_l = new JLabel("Accx  ");
-        JLabel accy_l = new JLabel("Accy  ");
-        JLabel vitx_l = new JLabel("Vitx  ");
-        JLabel vity_l = new JLabel("Vity  ");
-        JLabel posx_l = new JLabel("Posx  ");
-        JLabel posy_l = new JLabel("Posy  ");
+        JLabel diam_l = new JLabel("Diam ");
+        JLabel vitx_l = new JLabel("Vx  ");
+        JLabel vity_l = new JLabel("Vy  ");
+        JLabel posx_l = new JLabel("x  ");
+        JLabel posy_l = new JLabel("y  ");
         JLabel temp_l = new JLabel("Temp  ");
 
         groupe_composants = new JPanel();
@@ -104,38 +121,14 @@ public class CommandesPanel extends JPanel {
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(temp_l);
-        groupe_composants.add(this.temp_tf);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(mass_l);
         groupe_composants.add(this.mass_tf);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(diamx_l);
-        groupe_composants.add(this.diamx_tf);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(diamy_l);
-        groupe_composants.add(this.diamy_tf);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(accx_l);
-        groupe_composants.add(this.accx_tf);
-        this.add(groupe_composants);
-
-        groupe_composants = new JPanel();
-        groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(accy_l);
-        groupe_composants.add(this.accy_tf);
+        groupe_composants.add(diam_l);
+        groupe_composants.add(this.diam_tf);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
@@ -162,102 +155,194 @@ public class CommandesPanel extends JPanel {
         groupe_composants.add(this.posy_tf);
         this.add(groupe_composants);
 
+
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.movel_button);
-        groupe_composants.add(this.mover_button);
+        groupe_composants.add(temp_l);
+        groupe_composants.add(this.temp_tf);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.movet_button);
-        groupe_composants.add(this.moved_button);
-        groupe_composants.add(this.moveR_button);
+        groupe_composants.add(this.astre_type_panel);
+        this.add(groupe_composants);
+        
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.action_button);
+        this.action_button.setText("Ajouter");
+        this.action_button.addMouseListener(new EcouteurBoutonAjouter(this));
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.zoomp_button);
         groupe_composants.add(this.zoomn_button);
+        this.add(groupe_composants);
+        
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.movel_button);
+        groupe_composants.add(this.mover_button);
+        this.add(groupe_composants);
+        
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
+        groupe_composants.add(this.movet_button);
+        groupe_composants.add(this.moved_button);
+        groupe_composants.add(this.moveR_button);
+        this.add(groupe_composants);
+        
+        groupe_composants = new JPanel();
+        groupe_composants.setLayout(new FlowLayout());
         groupe_composants.add(this.time_sl);
+        groupe_composants.add(this.pause_play_button);
         groupe_composants.add(this.time_sp);
         this.add(groupe_composants);
 
         groupe_composants = new JPanel();
         groupe_composants.setLayout(new FlowLayout());
-        groupe_composants.add(this.pause_play_button);
-        groupe_composants.add(this.action_button);
-        this.action_button.setText("Ajouter");
-        this.action_button.addMouseListener(new EcouteurBoutonAjouter(this));
+        groupe_composants.add(this.remove_button);
+        groupe_composants.add(this.edit_button);
         this.add(groupe_composants);
-
     }
 
+    public void update() {
+        if (this.fenetre.getAstre_panel().getFocusBody() == null) {
+            this.nom_tf.setText("");
+            this.desc_tf.setText("");
+            this.diam_tf.setText("");
+            this.temp_tf.setText("");
+            this.mass_tf.setText("");
+            this.vitx_tf.setText("");
+            this.vity_tf.setText("");
+            this.posx_tf.setText("");
+            this.posy_tf.setText("");
+            return;
+        };
+        Astre focus = this.fenetre.getAstre_panel().getFocusBody();
+        this.nom_tf.setText(focus.getNom());
+        this.desc_tf.setText(focus.getDescription());
+        this.diam_tf.setText(String.format(Locale.US, "%.2E", focus.getDiametre().getX()));
+        this.temp_tf.setText(String.format(Locale.US, "%.2E", focus.getTemperature()));
+        this.mass_tf.setText(String.format(Locale.US, "%.2E", focus.getMasse()));
+        this.vitx_tf.setText(String.format(Locale.US, "%.2E", focus.getVitesse().getX()));
+        this.vity_tf.setText(String.format(Locale.US, "%.2E", focus.getVitesse().getY()));
+        this.posx_tf.setText(String.format(Locale.US, "%.2E", focus.getPosition().getX()));
+        this.posy_tf.setText(String.format(Locale.US, "%.2E", focus.getPosition().getY()));
+    }
+    
     public void ajouterAstre() {
-        String nom = this.nom_tf.getText();
-        String desc = this.desc_tf.getText();
-        String mass = this.mass_tf.getText();
-        String temp = this.temp_tf.getText();
-        String diamx = this.diamx_tf.getText();
-        String diamy = this.diamy_tf.getText();
-        String posx = this.posx_tf.getText();
-        String posy = this.posy_tf.getText();
-        String accx = this.accx_tf.getText();
-        String accy = this.accy_tf.getText();
-        String vitx = this.vitx_tf.getText();
-        String vity = this.vity_tf.getText();
+        // Récupération et nettoyage des textes de base
+        String nom = this.nom_tf.getText().trim();
+        String desc = this.desc_tf.getText().trim();
+        String type = this.astre_liste.getSelectedValue();
 
-        double mass_, temp_, vitx_, vity_, accx_, accy_, posx_, posy_, diamx_, diamy_;
-
-        if (nom == null || nom.trim().isEmpty() || diamx == null || diamx.trim().isEmpty() || diamy == null || diamy.trim().isEmpty() || posx == null || posx.trim().isEmpty() || posy == null || posy.trim().isEmpty()) {
-            System.out.println("Ajout impossible");
+        // Validation stricte des champs obligatoires pour la création
+        if (nom.isEmpty() || this.diam_tf.getText().trim().isEmpty() || 
+            this.posx_tf.getText().trim().isEmpty() || this.posy_tf.getText().trim().isEmpty()) {
+            System.err.println("Ajout impossible : Nom, Diamètre et Positions sont obligatoires.");
             return;
         }
 
-        if (temp == null || temp.trim().isEmpty()) {
-            temp_ = 0;
-        } else {
-            temp_ = Double.parseDouble(temp);
+        // Parsing de toutes les valeurs (les obligatoires et les optionnelles)
+        double diam_ = parseDoubleSafe(this.diam_tf.getText());
+        double posx_ = parseDoubleSafe(this.posx_tf.getText());
+        double posy_ = parseDoubleSafe(this.posy_tf.getText());
+        double mass_ = parseDoubleSafe(this.mass_tf.getText());
+        double temp_ = parseDoubleSafe(this.temp_tf.getText());
+        double vitx_ = parseDoubleSafe(this.vitx_tf.getText());
+        double vity_ = parseDoubleSafe(this.vity_tf.getText());
+
+        // Envoi à la logique métier
+        if (type == null) {
+            System.out.println("Aucune selection");
+            return;
         }
 
-        
-        diamx_ = Double.parseDouble(diamx);
-        diamy_ = Double.parseDouble(diamy);
-        posx_ = Double.parseDouble(posx);
-        posy_ = Double.parseDouble(posy);
-
-        if (accx == null || accx.trim().isEmpty()) {
-            accx_ = 0;
-        } else {
-            accx_ = Double.parseDouble(accx);
-        }
-
-        if (mass == null || mass.trim().isEmpty()) {
-            mass_ = 0;
-        } else {
-            mass_ = Double.parseDouble(mass);
-        }
-
-        if (accy == null || accy.trim().isEmpty()) {
-            accy_ = 0;
-        } else {
-            accy_ = Double.parseDouble(accy);
-        }
-
-        if (vitx == null || vitx.trim().isEmpty()) {
-            vitx_ = 0;
-        } else {
-            vitx_ = Double.parseDouble(vitx);
-        }
-
-        if (vity == null || vity.trim().isEmpty()) {
-            vity_ = 0;
-        } else {
-            vity_ = Double.parseDouble(vity);
-        }
-
-        this.espace.ajouterAstre(nom, desc, mass_, diamx_, diamy_, temp_, accx_, accy_, vitx_, vity_, posx_, posy_);
-        
+        this.espace.ajouterAstre(nom, desc, type, mass_, diam_, diam_, temp_, 0, 0, vitx_, vity_, posx_, posy_);
+        System.out.println("Astre ajouté avec succès : " + nom);
     }
 
+    public void editerAstre() {
+        Astre focus = this.fenetre.getAstre_panel().getFocusBody();
+        if (focus == null) return;
+
+        // --- 1. CHAMPS TEXTES ---
+        String nom = this.nom_tf.getText().trim();
+        if (!nom.isEmpty()) focus.setNom(nom);
+
+        String desc = this.desc_tf.getText().trim();
+        if (!desc.isEmpty()) focus.setDescription(desc);
+
+        // --- 2. CHAMPS NUMÉRIQUES (Mise à jour sélective) ---
+        
+        // Masse
+        if (!this.mass_tf.getText().trim().isEmpty()) {
+            focus.setMasse(parseDoubleSafe(this.mass_tf.getText()));
+        }
+
+        // Diamètre
+        if (!this.diam_tf.getText().trim().isEmpty()) {
+            focus.setDiametre(parseDoubleSafe(this.diam_tf.getText()));
+        }
+
+        // Température
+        if (!this.temp_tf.getText().trim().isEmpty()) {
+            focus.setTemperature(parseDoubleSafe(this.temp_tf.getText()));
+        }
+
+        // --- 3. VECTEURS (Position et Vitesse) ---
+        // On vérifie chaque axe indépendamment pour permettre de ne changer que X ou Y
+        
+        double newPosX = focus.getPosition().getX();
+        double newPosY = focus.getPosition().getY();
+        boolean posChanged = false;
+
+        if (!this.posx_tf.getText().trim().isEmpty()) {
+            newPosX = parseDoubleSafe(this.posx_tf.getText());
+            posChanged = true;
+        }
+        if (!this.posy_tf.getText().trim().isEmpty()) {
+            newPosY = parseDoubleSafe(this.posy_tf.getText());
+            posChanged = true;
+        }
+        if (posChanged) focus.setPosition(newPosX, newPosY);
+
+        double newVitX = focus.getVitesse().getX();
+        double newVitY = focus.getVitesse().getY();
+        boolean vitChanged = false;
+
+        if (!this.vitx_tf.getText().trim().isEmpty()) {
+            newVitX = parseDoubleSafe(this.vitx_tf.getText());
+            vitChanged = true;
+        }
+        if (!this.vity_tf.getText().trim().isEmpty()) {
+            newVitY = parseDoubleSafe(this.vity_tf.getText());
+            vitChanged = true;
+        }
+        if (vitChanged) focus.setVitesse(newVitX, newVitY);
+    }
+    public void effacerAstre() {
+        if (this.fenetre.getAstre_panel().getFocusBody() != null)
+        this.espace.retirerAstre(this.fenetre.getAstre_panel().getFocusBody());
+    }
+
+    /**
+     * Tente de convertir une String en double. 
+     * Retourne 0 si le champ est vide, nul ou mal formaté.
+     */
+    
+    
+    private double parseDoubleSafe(String text) {
+    if (text == null || text.trim().isEmpty()) {
+        return 0.0;
+    }
+    try {
+        return Double.parseDouble(text.trim().replace(',', '.')); // Gère aussi les virgules
+    } catch (NumberFormatException e) {
+        System.err.println("Erreur de format numérique pour : " + text);
+        return 0.0;
+    }
+}
 }
