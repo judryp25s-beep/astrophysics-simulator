@@ -87,22 +87,14 @@ public class WhiteHole extends Astre {
         // Éviter la division par zéro
         if (distance == 0) { dx = 1; dy = 1; distance = 1.41; }
 
-        // 2. Normalisation et intensité de la force d'expulsion
-        // On peut baser la force sur la vitesse actuelle pour un effet de "rebond"
-        double intensite = 2.5; 
-        double forceX = (dx / distance) * intensite;
-        double forceY = (dy / distance) * intensite;
+        double vx = a.getVitesse().getX();
+        double vy = a.getVitesse().getY();
+        double ax = a.getAcceleration().getX();
+        double ay = a.getAcceleration().getY();
 
-        // 3. Application brutale de la nouvelle vitesse
-        // On inverse la vitesse de l'astre 'a' et on ajoute l'impulsion du trou blanc
-        a.getVitesse().setX(forceX * Math.abs(a.getVitesse().getX() + 1));
-        a.getVitesse().setY(forceY * Math.abs(a.getVitesse().getY() + 1));
-
-        // 4. "Kick" de position pour sortir de la zone de collision
-        // Cela évite que l'astre reste bloqué "à l'intérieur" du trou blanc
-        a.getPosition().setX(a.getPosition().getX() + a.getVitesse().getX());
-        a.getPosition().setY(a.getPosition().getY() + a.getVitesse().getY());
-        
+        //a.getVitesse().setX(-vx);
+        //a.getVitesse().setY(-vy);
+        a.setAcceleration(ax*Math.abs(ax), ay*Math.abs(ay));
         
         System.out.println("EXPULSION : " + a.getNom() + " a été rejeté par le Trou Blanc !");
     }

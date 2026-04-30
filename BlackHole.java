@@ -80,7 +80,7 @@ public class BlackHole extends Astre {
     public Astre fusion(Astre a) {
         if (a instanceof WhiteHole) return a.fusion(this);
         WhiteHole hole = this.getEspace().getRandomWhiteHole();
-        if (Math.random() < 0.33 && hole != null) {
+        if (Math.random() < 1 && hole != null) {
             a.setPosition(
                 hole.getPosition().getX(),
                 hole.getPosition().getY()

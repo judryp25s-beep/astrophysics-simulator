@@ -62,7 +62,7 @@ public class Astre {
 
     public void updateAcceleration(double dt) {
         double dax = 0, day = 0;
-        if (this.masse <= 0 || this.espace == null) return;
+        if (this.masse <= 0 || this.espace == null || this instanceof WhiteHole) return;
 
         for (Object obj : this.espace.getAstres()) {
             Astre a = (Astre) obj;
@@ -79,9 +79,19 @@ public class Astre {
             
             double dx = a.getPosition().getX() - this.position.getX();
             double dy = a.getPosition().getY() - this.position.getY();
+
+            if ((a instanceof WhiteHole) && this.calculerDistance(a) <= a.getDiametre().getX() + this.diametre.getX()) {
+                dax += -(dx / effectiveD) * forceA;
+                day += -(dy / effectiveD) * forceA;
+            } else if ((a instanceof WhiteHole) && this.calculerDistance(a) <= 3*(a.getDiametre().getX() + this.diametre.getX())) {
+                double f = this.calculerDistance(a)/(a.getDiametre().getX() + this.diametre.getX());
+                dax += (dx / effectiveD) * forceA/f;
+                day += (dy / effectiveD) * forceA/f;
+            } else {
+                dax += (dx / effectiveD) * forceA;
+                day += (dy / effectiveD) * forceA;
+            }
             
-            dax += (dx / effectiveD) * forceA;
-            day += (dy / effectiveD) * forceA;
         }
         this.acceleration.setX(dax);
         this.acceleration.setY(day);

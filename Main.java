@@ -51,29 +51,17 @@ public class Main {
      * Trois étoiles en équilibre (Triangle équilatéral parfait)
      */
     public static void creerSystemeTristellaire(Espace e) {
-        double R = 150; // Rayon du cercle sur lequel sont les étoiles
-        // Formule de stabilité pour 3 corps identiques en triangle : v = sqrt(G * M / (sqrt(3) * R))
-        double vBase = Math.sqrt(Astre.G * MSoleil / (Math.sqrt(3) * R));
 
         // Étoile 1 : Haut (Angle 90°)
         // Pos : (0, R) | Vel : (v, 0)
-        e.ajouterAstre("Alpha", "Cyan", "BlackHole", MSoleil, 25, 25, 0, 0, 0, vBase, 0, 0, R);
+        e.ajouterAstre("Alpha", "Cyan", "WhiteHole", 30, 40, 40, 0, 0, 0, 50, 0, 0, 0);
 
         // Étoile 2 : Bas Gauche (Angle 210°)
-        double z2 = R * Math.sin(Math.toRadians(210));
-        double x2 = R * Math.cos(Math.toRadians(210));
-        // La vitesse doit être rotationnelle (perpendiculaire au vecteur position)
-        double vx2 = vBase * Math.cos(Math.toRadians(210 + 90));
-        double vz2 = vBase * Math.sin(Math.toRadians(210 + 90));
-        e.ajouterAstre("Beta", "White", "BlackHole", MSoleil, 25, 25, 0, 0, 0, vx2, 0, vz2, z2);
+        e.ajouterAstre("Beta", "White", "BlackHole", 70, 70, 70, 0, 0, 0, 25, 25, 0, 100);
         // Note: j'ai supposé que ton ajouterAstre prend (..., vx, vy, vz, z) basé sur ton code initial
 
         // Étoile 3 : Bas Droite (Angle 330°)
-        double z3 = R * Math.sin(Math.toRadians(330));
-        double x3 = R * Math.cos(Math.toRadians(330));
-        double vx3 = vBase * Math.cos(Math.toRadians(330 + 90));
-        double vz3 = vBase * Math.sin(Math.toRadians(330 + 90));
-        e.ajouterAstre("Gamma", "Red", "Planet", MSoleil, 25, 25, 0, 0, 0, vx3, 0, vz3, z3);
+        e.ajouterAstre("Gamma", "Red", "Planet", 15, 25 , 25, 0, 0, 0, 0, 10, 100, 0);
     }
 
     /**
