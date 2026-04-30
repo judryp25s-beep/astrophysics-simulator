@@ -147,6 +147,47 @@ public class Astre {
         this.nom = this.nom + "+" + a.getNom();
         this.espace.retirerAstre(a);
     }
+    
+
+    public void fusionDynamique (Astre a) {
+        // 1. Calcul des propriétés physiques (Conservation de la masse et du mouvement)
+        double masseTotale = this.masse + a.getMasse();
+        
+        double vx = (this.masse * this.vitesse.getX() + a.getMasse() * a.getVitesse().getX()) / masseTotale;
+        double vy = (this.masse * this.vitesse.getY() + a.getMasse() * a.getVitesse().getY()) / masseTotale;
+        
+        // Position au centre de masse pour plus de réalisme
+        double px = (this.position.getX() * this.masse + a.getPosition().getX() * a.getMasse()) / masseTotale;
+        double py = (this.position.getY() * this.masse + a.getPosition().getY() * a.getMasse()) / masseTotale;
+
+        // Nouveau diamètre basé sur la conservation du volume/surface
+        double nouveauDiam = Math.sqrt(Math.pow(this.diametre.getX(), 2) + Math.pow(a.getDiametre().getX(), 2));
+        
+        double nouvelleTemp = (this.temperature + a.getTemperature()) / 2;
+        String nouveauNom = this.nom + "+" + a.getNom();
+        String nouvelleDesc = "Fusion de " + this.nom + " et " + a.getNom();
+
+        // 2. Détermination du type dynamique (Star, Planet, BlackHole)
+        // On récupère le nom de la classe actuelle (ex: "Star")
+        String typeAstre = this.getClass().getSimpleName();
+
+        // 3. Appel à la méthode de l'espace et retour de l'objet créé
+        this.espace.retirerAstre(a);
+        this.espace.retirerAstre(this);
+        this.espace.ajouterAstre(
+            nouveauNom, 
+            nouvelleDesc, 
+            typeAstre, 
+            masseTotale, 
+            nouveauDiam, 
+            nouveauDiam, 
+            nouvelleTemp, 
+            0.0, 0.0, // accélération initiale
+            vx, vy, 
+            px, py
+        );
+    }
+
     public Astre fusion(Astre a) {
         double masseTotale = this.masse + a.getMasse();
         

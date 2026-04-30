@@ -61,16 +61,17 @@ public class AstrePanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        g2d.setColor(Color.decode("#515151"));
-        g2d.drawLine(
-            (int) -(this.zoom*this.offsetX),
-            (int) -(this.offsetY*this.zoom),
-            (int) -(this.zoom*this.offsetX),
-            (int) -(this.zoom*(100000 + this.offsetY))
-        );
         //g2d.drawLine((int) this.offsetX, (int) -this.offsetY, (int) -(100000*this.zoom), (int) -this.offsetY);
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
+        
+        g2d.setColor(Color.decode("#515151"));
+        g2d.drawLine(
+            (int) -(centerX + this.offsetX),
+            (int) -(centerY + this.offsetY),
+            (int) -(centerX + this.offsetX),
+            (int) -(centerY + this.offsetY + 10000)
+        );
 
         double vScale = 10.0; 
         double aScale = 50.0;
@@ -136,6 +137,7 @@ public class AstrePanel extends JPanel {
     }
 
     public void time_update(double time) {
+        if (this.time_update * time > 0)
         this.time_update *= time;
     }
 

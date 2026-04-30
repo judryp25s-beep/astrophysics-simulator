@@ -72,7 +72,10 @@ public class Star extends Astre {
         if (autre instanceof BlackHole || autre instanceof WhiteHole) {
             return autre.fusion(this); 
         }
-        // L'étoile absorbe l'autre (Planète ou autre étoile)
+        if (autre instanceof Star) {
+            this.fusionDynamique(autre);
+            return null;
+        }
         this.absorber(autre);
         return this;
     }

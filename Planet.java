@@ -65,8 +65,10 @@ public class Planet extends Astre {
         if (a instanceof Star || a instanceof BlackHole) {
             return a.fusion(this); // La planète se fait manger
         }
-        // Planet + Planet = Planet
-        this.absorber(a);
+        if (a instanceof Planet) {
+            this.fusionDynamique(a);
+            return null;
+        }
         return this;
     }
 

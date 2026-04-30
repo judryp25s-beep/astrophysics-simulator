@@ -87,6 +87,10 @@ public class BlackHole extends Astre {
             );
             return null; 
         }
+        if (a instanceof BlackHole) {
+            this.fusionDynamique(a);
+            return null;
+        }
         // Le trou noir absorbe la masse sans forcément grossir autant qu'une étoile
         this.absorber(a);
         return this;

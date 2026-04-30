@@ -71,7 +71,7 @@ public class CommandesPanel extends JPanel {
 
         this.time_sl = new JButton();
         this.time_sl.setText("<<");
-        this.time_sl.addMouseListener(new EcouteurBoutonTime(this.fenetre.getAstre_panel(), 0.25));
+        this.time_sl.addMouseListener(new EcouteurBoutonTime(this.fenetre.getAstre_panel(), 0.75));
 
         this.moveR_button = new JButton();
         this.moveR_button.setText("↻");
